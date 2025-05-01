@@ -33,7 +33,7 @@ signal.signal(signal.SIGTERM, shutdown)
 # —————————————————————————————————————————————————————————————————————
 if __name__ == '__main__':
     order_id = 1
-    topic = 'zamowienia_elektronika'
+    topic = 'Daniel'
 
     while True:
         # Generowanie kolejnego zamówienia
