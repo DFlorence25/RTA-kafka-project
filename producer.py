@@ -11,7 +11,7 @@ from data_generator import generate_order
 # Konfiguracja Kafka Producer
 # —————————————————————————————————————————————————————————————————————
 producer = KafkaProducer(
-    bootstrap_servers='localhost:9092',
+    bootstrap_servers='broker:9092',
     acks='all',              # potwierdzenie od wszystkich brokerów
     retries=5,               # liczba prób ponowienia wysyłki
     key_serializer=lambda k: k.encode('utf-8'),
