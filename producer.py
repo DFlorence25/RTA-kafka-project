@@ -14,7 +14,6 @@ producer = KafkaProducer(
     bootstrap_servers='localhost:9092',
     acks='all',              # potwierdzenie od wszystkich brokerów
     retries=5,               # liczba prób ponowienia wysyłki
-    enable_idempotence=True, # gwarantuje brak duplikatów
     key_serializer=lambda k: k.encode('utf-8'),
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
