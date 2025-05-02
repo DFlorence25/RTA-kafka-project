@@ -11,9 +11,10 @@ from data_generator import generate_order
 # Konfiguracja Kafka Producer
 # —————————————————————————————————————————————————————————————————————
 producer = KafkaProducer(
-    bootstrap_servers='broker:9092',
+    bootstrap_servers='localhost:9092',
     acks='all',              # potwierdzenie od wszystkich brokerów
     retries=5,               # liczba prób ponowienia wysyłki
+    enable_idempotence=True, # gwarantuje brak duplikatów
     key_serializer=lambda k: k.encode('utf-8'),
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
@@ -33,7 +34,7 @@ signal.signal(signal.SIGTERM, shutdown)
 # —————————————————————————————————————————————————————————————————————
 if __name__ == '__main__':
     order_id = 1
-    topic = 'Daniel'
+    topic = 'zamowienia_elektronika'
 
     while True:
         # Generowanie kolejnego zamówienia
