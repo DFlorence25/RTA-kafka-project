@@ -24,7 +24,7 @@ signal.signal(signal.SIGTERM, shutdown)
 # —————————————————————————————————————————————————————————————————————
 consumer = KafkaConsumer(
     'zamowienia_elektronika',
-    bootstrap_servers='localhost:9092',
+    bootstrap_servers='broker:9092',
     group_id='consumer_group',
     auto_offset_reset='earliest',
     enable_auto_commit=True,
