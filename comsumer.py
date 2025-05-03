@@ -1,3 +1,4 @@
+import os
 import json
 import csv
 import signal
@@ -60,8 +61,12 @@ consumer = KafkaConsumer(
 # —————————————————————————————————————————————————————————————————————
 # Przygotowanie CSV (rotacja dzienna)
 # —————————————————————————————————————————————————————————————————————
+output_dir = 'dane_dzienne'                 # nazwa folderu na pliki CSV
+os.makedirs(output_dir, exist_ok=True)     # tworzymy folder, jeśli nie istnieje
+
+
 today     = datetime.now().strftime("%Y-%m-%d")
-file_path = f"orders_{today}.csv"
+file_path = os.path.join(output_dir, f"orders_{today}.csv") # budujemy ścieżkę: dane_dzienne/orders_YYYY-MM-DD.csv
 
 csvfile = open(file_path, mode='w', newline='', encoding='utf-8')
 writer  = csv.DictWriter(csvfile, fieldnames=header)
