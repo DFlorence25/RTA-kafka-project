@@ -19,7 +19,7 @@ region_to_cities = {
 # Mapowanie miast na listę przypisanych sprzedawców
 city_to_salespersons = {
     'Warszawa':   ['Daniil Vabishchevich', 'Pawel Zielinski', 'Ewa Kowalska'],
-    'Lublin':     ['Kiryl Rudovich', 'Katarzyna Maj', 'Tomasz Lis'],
+    'Lublin':     ['Julia Czerwinska', 'Katarzyna Maj', 'Tomasz Lis'],
     'Terespol':   ['Aliaksandra Tsyhel', 'Bartek Nowicki'],
     'Bialystok':  ['Ilona Shandrokha', 'Jakub Michalski'],
     'Krakow':     ['Maksim Mikulich', 'Michal Lewandowski'],
@@ -28,7 +28,7 @@ city_to_salespersons = {
     'Czestochowa':['Joanna Piotrowska', 'Robert Kalinowski'],
     'Wroclaw':    ['Magda Zalewska', 'Krzysztof Dudek'],
     'Poznan':     ['Izabela Wrona', 'Piotr Zajac'],
-    'Gdansk':     ['Julia Czerwinska', 'Adam Jasinski'],
+    'Gdansk':     ['Kiryl Rudovich', 'Adam Jasinski'],
     'Gdynia':     ['Natalia Grabowska', 'Lukasz Wisniewski'],
     'Bydgoszcz':  ['Weronika Zawadzka', 'Grzegorz Sienkiewicz'],
     'Sopot':      ['Alicja Pawlowska', 'Dariusz Ostrowski'],
