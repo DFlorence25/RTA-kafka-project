@@ -1,34 +1,22 @@
-version: '3.8'
-services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
+# Dockerfile
 
-  kafka:
-    image: confluentinc/cp-kafka:7.5.0
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+# Bazowy obraz Pythona
+FROM python:3.9-slim
 
-  app:
-    build: .
-    depends_on:
-      - kafka
-    volumes:
-      - ./:/app
-    working_dir: /app
-    environment:
-      - PYTHONUNBUFFERED=1
-    entrypoint: ["python"]
-    command: ["producer.py"]
+# Ustawiamy katalog roboczy
+WORKDIR /app
+
+# Kopiujemy i instalujemy zależności
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Kopiujemy cały kod projektu
+COPY . .
+
+# Dzięki temu logi będą wyświetlane od razu w konsoli (bez buforowania)
+ENV PYTHONUNBUFFERED=1
+
+# Domyślnie uruchamiamy generator danych,
+# ale w docker-compose.yml można to nadpisać, uruchamiając producer.py lub consumer.py
+ENTRYPOINT ["python"]
+CMD ["data_generator.py"]

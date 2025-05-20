@@ -53,6 +53,6 @@ if __name__ == '__main__':
         # Regulacja tempa generacji: częściej w godzinach szczytu
         hour = datetime.now().hour
         if 9 <= hour < 12 or 17 <= hour < 20:
-            time.sleep(random.uniform(0.5, 1.5))
+            time.sleep(random.uniform(1, 7))
         else:
-            time.sleep(random.uniform(2.0, 5.0))
+            time.sleep(random.uniform(7, 10))

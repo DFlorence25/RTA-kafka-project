@@ -1,15 +1,24 @@
 version: '3.8'
+
 services:
+  # ——————————————————————————————————————————————————————
+  # Zookeeper dla Kafki
+  # ——————————————————————————————————————————————————————
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
 
-  kafka:
+  # ——————————————————————————————————————————————————————
+  # Broker Kafka
+  # ——————————————————————————————————————————————————————
+  broker:
     image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -17,18 +26,49 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      # W kodzie odwołujemy się do 'broker:9092'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  app:
-    build: .
+  # ——————————————————————————————————————————————————————
+  # Generator danych
+  # ——————————————————————————————————————————————————————
+  generator:
+    image: python:3.9-slim
     depends_on:
-      - kafka
+      - broker
     volumes:
-      - ./:/app
+      - .:/app
     working_dir: /app
+    # Przy uruchomieniu instalujemy zależności i startujemy generator
+    command: sh -c "pip install -r requirements.txt && python data_generator.py"
+
+  # ——————————————————————————————————————————————————————
+  # Producent do Kafka
+  # ——————————————————————————————————————————————————————
+  producer:
+    image: python:3.9-slim
+    depends_on:
+      - broker
+    volumes:
+      - .:/app
+    working_dir: /app
+    # Instalacja bibliotek i uruchomienie skryptu producenta
+    command: sh -c "pip install -r requirements.txt && python producer.py"
+
+  # ——————————————————————————————————————————————————————
+  # Konsument: zapis do CSV i Google Sheets
+  # ——————————————————————————————————————————————————————
+  consumer:
+    image: python:3.9-slim
+    depends_on:
+      - broker
+    volumes:
+      - .:/app
+    working_dir: /app
+    # Ustawiamy ścieżkę do poświadczeń usługi Google
     environment:
-      - PYTHONUNBUFFERED=1
-    entrypoint: ["python"]
-    command: ["producer.py"]
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/creds.json
+    # Instalacja zależności i uruchomienie konsumenta
+    command: sh -c "pip install -r requirements.txt && python consumer.py"
