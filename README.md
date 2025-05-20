@@ -1,4 +1,4 @@
-# 📊 Real-Time Data Pipeline - Elektronika Zamówienia
+# 📊 Real-Time Data Analytics - Analiza Sprzedaż
 
 ## 🎯 Problem biznesowy
 
